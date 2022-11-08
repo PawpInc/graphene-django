@@ -105,9 +105,7 @@ class GrapheneSettings(object):
 
     @property
     def user_settings(self):
-        if not hasattr(self, "_user_settings"):
-            self._user_settings = getattr(settings, "GRAPHENE", {})
-        return self._user_settings
+        return getattr(settings, "GRAPHENE", {})
 
     def __getattr__(self, attr):
         if attr not in self.defaults:
