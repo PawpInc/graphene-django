@@ -288,7 +288,7 @@ class DjangoObjectType(ObjectType):
 
     @classmethod
     def get_node(cls, info, id):
-        queryset = cls.get_queryset(cls._meta.model.objects, info)
+        queryset = cls.get_queryset(cls._meta.model._default_manager, info)
         try:
             return queryset.get(pk=id)
         except cls._meta.model.DoesNotExist:

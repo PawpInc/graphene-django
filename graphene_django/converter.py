@@ -303,7 +303,7 @@ def convert_onetoone_field_to_djangomodel(field, registry=None):
                         field_name
                     ).remote_field.name
                     return _type.get_queryset(
-                        _type._meta.model.objects.filter(
+                        _type._meta.model._default_manager.filter(
                             **{reversed_field_name: root.pk}
                         ),
                         info,
