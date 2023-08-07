@@ -9,13 +9,13 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import View
-from graphene import Schema
 from graphql import ExecutionResult, OperationType, execute, get_operation_ast, parse
 from graphql.error import GraphQLError
 from graphql.execution.middleware import MiddlewareManager
 from graphql.language import OperationDefinitionNode
 from graphql.validation import validate
 
+from graphene import Schema
 from graphene_django.constants import MUTATION_ERRORS_FLAG
 from graphene_django.utils.utils import set_rollback
 
@@ -332,7 +332,9 @@ class GraphQLView(View):
 
         execute_args = (self.schema.graphql_schema, document)
 
-        if validation_errors := validate(*execute_args):
+        validation_errors = validate(*execute_args)
+        
+        if validation_errors:
             return ExecutionResult(data=None, errors=validation_errors)
 
         try:
