@@ -40,9 +40,9 @@ def get_accepted_content_types(request):
 
     raw_content_types = request.META.get("HTTP_ACCEPT", "*/*").split(",")
     qualified_content_types = map(qualify, raw_content_types)
-    return list(
+    return [
         x[0] for x in sorted(qualified_content_types, key=lambda x: x[1], reverse=True)
-    )
+    ]
 
 
 def instantiate_middleware(middlewares):
@@ -332,7 +332,9 @@ class GraphQLView(View):
 
         execute_args = (self.schema.graphql_schema, document)
 
-        if validation_errors := validate(*execute_args):
+        validation_errors = validate(*execute_args)
+        
+        if validation_errors:
             return ExecutionResult(data=None, errors=validation_errors)
 
         try:
